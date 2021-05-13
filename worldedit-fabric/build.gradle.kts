@@ -20,13 +20,22 @@ applyShadowConfiguration()
 
 apply(plugin = "fabric-loom")
 apply(plugin = "java-library")
+plugins {
+    id("java")
+}
 
 configure<LoomGradleExtension> {
     accessWidener("src/main/resources/worldedit.accesswidener")
 }
 
-val minecraftVersion = "21w15a"
-val yarnMappings = "21w15a+build.6:v2"
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(16))
+    }
+}
+
+val minecraftVersion = "21w19a"
+val yarnMappings = "21w19a+build.6:v2"
 val loaderVersion = "0.11.3"
 
 configurations.all {
@@ -56,7 +65,7 @@ dependencies {
     "modImplementation"("net.fabricmc:fabric-loader:$loaderVersion")
 
     // [1] declare fabric-api dependency...
-    "fabricApi"("net.fabricmc.fabric-api:fabric-api:0.32.9+1.17")
+    "fabricApi"("net.fabricmc.fabric-api:fabric-api:0.34.4+1.17")
 
     // [2] Load the API dependencies from the fabric mod json...
     @Suppress("UNCHECKED_CAST")
@@ -118,6 +127,7 @@ configure<BasePluginConvention> {
 tasks.named<Copy>("processResources") {
     // this will ensure that this task is redone when the versions change.
     inputs.property("version", project.ext["internalVersion"])
+    duplicatesStrategy = DuplicatesStrategy.WARN
 
     from(sourceSets["main"].resources.srcDirs) {
         include("fabric.mod.json")

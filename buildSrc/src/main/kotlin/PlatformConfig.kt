@@ -20,7 +20,7 @@ fun Project.applyPlatformAndCoreConfiguration() {
     apply(plugin = "java")
     apply(plugin = "eclipse")
     apply(plugin = "idea")
-    apply(plugin = "maven")
+    apply(plugin = "maven-publish")
     apply(plugin = "checkstyle")
     apply(plugin = "com.github.johnrengelman.shadow")
     apply(plugin = "com.jfrog.artifactory")
@@ -54,7 +54,7 @@ fun Project.applyPlatformAndCoreConfiguration() {
         "testImplementation"("org.junit.jupiter:junit-jupiter-params:${Versions.JUNIT}")
         "testImplementation"("org.mockito:mockito-core:${Versions.MOCKITO}")
         "testImplementation"("org.mockito:mockito-junit-jupiter:${Versions.MOCKITO}")
-        "testRuntime"("org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")
+        //"testRuntime"("org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT}")
     }
 
     // Java 8 turns on doclint which we fail

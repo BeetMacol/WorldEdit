@@ -99,8 +99,8 @@ public class FabricPlayer extends AbstractPlayerActor {
         return new Location(
                 FabricWorldEdit.inst.getWorld(this.player.world),
                 position,
-                this.player.yaw,
-                this.player.pitch);
+                this.player.getYaw(),
+                this.player.getPitch());
     }
 
     @Override

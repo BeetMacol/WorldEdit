@@ -1,10 +1,7 @@
-import net.minecrell.gradle.licenser.LicenseExtension
 import org.gradle.plugins.ide.idea.model.IdeaModel
 
 plugins {
     id("java-library")
-    id("net.ltgt.apt-eclipse")
-    id("net.ltgt.apt-idea")
     id("antlr")
 }
 
@@ -82,11 +79,6 @@ tasks.named<AntlrTask>("generateGrammarSource").configure {
     )
 }
 
-configure<LicenseExtension> {
-    exclude {
-        it.file.startsWith(project.buildDir)
-    }
-}
 tasks.withType<Checkstyle>().configureEach {
     exclude("com/sk89q/worldedit/antlr/**/*.java")
 }
@@ -113,6 +105,7 @@ sourceSets.named("main") {
 }
 
 tasks.named<Copy>("processResources") {
+    duplicatesStrategy = DuplicatesStrategy.WARN
     from(configurations.named("languageFiles")) {
         rename {
             "i18n.zip"

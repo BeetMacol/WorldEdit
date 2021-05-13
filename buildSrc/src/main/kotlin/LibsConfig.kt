@@ -2,20 +2,16 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency
-import org.gradle.api.internal.HasConvention
-import org.gradle.api.plugins.MavenRepositoryHandlerConvention
-import org.gradle.api.tasks.Upload
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.getPlugin
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.register
 
 fun Project.applyLibrariesConfiguration() {
     applyCommonConfiguration()
     apply(plugin = "java-base")
-    apply(plugin = "maven")
+    apply(plugin = "maven-publish")
     apply(plugin = "com.github.johnrengelman.shadow")
     apply(plugin = "com.jfrog.artifactory")
 
@@ -36,10 +32,10 @@ fun Project.applyLibrariesConfiguration() {
         archiveClassifier.set("")
 
         dependencies {
+            exclude(dependency("org.slf4j:slf4j-api"))
             exclude(dependency("com.google.guava:guava"))
             exclude(dependency("com.google.code.gson:gson"))
             exclude(dependency("org.checkerframework:checker-qual"))
-            exclude(dependency("org.slf4j:slf4j-api"))
         }
 
         relocations.forEach { (from, to) ->
@@ -94,14 +90,6 @@ fun Project.applyLibrariesConfiguration() {
         val sourcesJar = tasks.named("sourcesJar")
         add("archives", sourcesJar) {
             builtBy(sourcesJar)
-        }
-    }
-
-    tasks.register<Upload>("install") {
-        configuration = configurations["archives"]
-        (repositories as HasConvention).convention.getPlugin<MavenRepositoryHandlerConvention>().mavenInstaller {
-            pom.version = project.version.toString()
-            pom.artifactId = project.name
         }
     }
 

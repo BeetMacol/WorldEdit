@@ -64,8 +64,8 @@ class FabricEntity implements Entity {
         net.minecraft.entity.Entity entity = entityRef.get();
         if (entity != null) {
             Vector3 position = Vector3.at(entity.getX(), entity.getY(), entity.getZ());
-            float yaw = entity.yaw;
-            float pitch = entity.pitch;
+            float yaw = entity.getYaw();
+            float pitch = entity.getPitch();
 
             return new Location(FabricAdapter.adapt(entity.world), position, yaw, pitch);
         } else {

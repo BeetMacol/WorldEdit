@@ -14,8 +14,15 @@ buildscript {
     }
 }
 plugins {
+    id("java")
     id("org.enginehub.codecov")
     jacoco
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(16))
+    }
 }
 
 if (!project.hasProperty("gitCommitHash")) {
